@@ -1,6 +1,3 @@
-/*
- * @author	Brian Ayon
- */
 package cse360assignment02;
 
 /**
@@ -8,23 +5,21 @@ package cse360assignment02;
  */
 public class AddingMachine {
     private int total;
-    private String totalString;
 
     /**
      * Class constructor for AddingMachine
      */
     public AddingMachine () {
         total = 0;  // not needed - included for clarity
-        totalString = "";
     }
 
 
     /**
      * Method to return total
-     * @return total
+     * @return 0
      */
     public int getTotal () {
-        return total;
+        return 0;
     }
 
     /**
@@ -32,8 +27,6 @@ public class AddingMachine {
      * @param value
      */
     public void add (int value) {
-    	total = total + value;
-    	totalString += " + " + value;
     }
 
     /**
@@ -41,23 +34,19 @@ public class AddingMachine {
      * @param value
      */
     public void subtract (int value) {
-    	total = total - value;
-    	totalString += " - " + value;
     }
 
     /**
      * Method to return string
-     * @return totalString
+     * @return
      */
     public String toString () {
-        return totalString;
+        return "";
     }
 
     /**
      * Method to clear
      */
     public void clear() {
-    	total = 0;
-    	totalString = "";
     }
-}
+} 
