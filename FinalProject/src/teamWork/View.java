@@ -26,15 +26,16 @@ public class View extends JFrame implements ActionListener{
     JFileChooser chooser = new JFileChooser(".");
     //static String[][] result;
      
-     //static String[][] result = {{"1210101010", "Javier", "Gonzalez", "Computer Science", "Graduate", "javiergs"},
-    	//{"0000000000", "John", "Doe", "Engineering", "Undergraduate", "jdoe24"}};
+     static String[][] result = {{"1210101010", "Javier", "Gonzalez", "Computer Science", "Graduate", "javiergs"},
+    	{"0000000000", "John", "Doe", "Engineering", "Undergraduate", "jdoe24"}};
     		
     static String[] categories = {"ID", "First Name", "Last Name", "Program", "Level", "ASURITE"};
-    
-    //static final JTable jt = new JTable(result, categories);
-    //static JScrollPane sp=new JScrollPane(jt);
 
-    static String[][] result;
+    static JTable jt = new JTable(result, categories);
+    static JScrollPane sp=new JScrollPane(jt);
+
+
+    //static String[][] result;
     public View()
     {
     	
@@ -78,35 +79,33 @@ public class View extends JFrame implements ActionListener{
 
         // add menubar to frame
         frame.setJMenuBar(mb);
-        
-        
+
+        //jt.setCellSelectionEnabled(true);
+
+
+        frame.add(sp);
         // set the size of the frame
         frame.setSize(500, 500);
         frame.setVisible(true);
-        
-        try {
-			result = readArray();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        
 
 
+        
+        //result = m.readArray();
 
     }
     
     public void addTable()
 
     {
-    	JTable jt = new JTable(result, categories);
-        JScrollPane sp=new JScrollPane(jt);
-    	jt.setCellSelectionEnabled(true);  
+    	//JTable jt = new JTable(result, categories);
+        //JScrollPane sp=new JScrollPane(jt);
+    	//jt.setCellSelectionEnabled(true);
 
-        frame.add(sp); 
+        //frame.add(sp);
+
     }
     
-    public static String[][] readArray() throws FileNotFoundException
+    public void readArray() throws FileNotFoundException
     {
     	
     	Scanner in = new Scanner(new BufferedReader(new FileReader(file)));
@@ -129,15 +128,16 @@ public class View extends JFrame implements ActionListener{
     	}
 
     	System.out.println(Arrays.deepToString(result));
-    	return result;
-    	//addTable();
+
+        //addTable();
+    	//return result;
+
 
     }
     
     public void askFile()
     {
-    	
-    	
+
     	chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV FILES","*csv","csv");
         chooser.setFileFilter(filter);
@@ -173,14 +173,14 @@ public class View extends JFrame implements ActionListener{
         if(evt.getSource() == loadRoster)
         {
         	askFile();
-        	/**
+
         	try {
 				readArray();
 				//addTable();
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}**/
+			}
             
         }
 
