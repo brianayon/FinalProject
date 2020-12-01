@@ -9,16 +9,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 import javax.swing.JFileChooser;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-public class View extends JFrame implements ActionListener{
+public class View extends JFrame implements MenuListener, ActionListener{
     static JMenuBar mb;
 
     static JMenu fileMenu, aboutMenu;
 
     static JMenuItem loadRoster, addAttendance, save, plotData;
 
-    static JFrame frame, fileChooser;
+    static JFrame frame, fileChooser, about;
 
     static File file;
     Scanner fileIn;
@@ -61,16 +63,15 @@ public class View extends JFrame implements ActionListener{
         save = new JMenuItem("Save");
         plotData = new JMenuItem("Plot Data");
 
-
         View m = new View();
         loadRoster.addActionListener(m);
+        aboutMenu.addMenuListener(m);
 
         // add menu items to fileMenu
         fileMenu.add(loadRoster);
         fileMenu.add(addAttendance);
         fileMenu.add(save);
         fileMenu.add(plotData);
-
 
 
         // add menu to menu bar
@@ -92,6 +93,7 @@ public class View extends JFrame implements ActionListener{
         
         //result = m.readArray();
 
+    
     }
     
     public void addTable()
@@ -183,6 +185,29 @@ public class View extends JFrame implements ActionListener{
 			}
             
         }
+
+    }
+
+    // methods required by MenuListener
+    @Override
+    public void menuSelected(MenuEvent me)
+    {
+        if (me.getSource().equals(aboutMenu))
+            {
+                JOptionPane.showMessageDialog(about, "CSE360 Final Project\nRachael Kang\nBrian Ayon\nChris Zabel\nRobert",
+                                                     "Team Information", JOptionPane.INFORMATION_MESSAGE);
+            }
+    }
+
+    @Override
+    public void menuDeselected(MenuEvent e)
+    {
+
+    }
+
+    @Override
+    public void menuCanceled(MenuEvent e)
+    {
 
     }
 }
