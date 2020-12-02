@@ -30,9 +30,17 @@ public class View extends JFrame implements MenuListener, ActionListener{
      
      static String[][] result = {{"1210101010", "Javier", "Gonzalez", "Computer Science", "Graduate", "javiergs"},
     	{"0000000000", "John", "Doe", "Engineering", "Undergraduate", "jdoe24"}};
+     
+     static String[][] att = {{"1210101010,8:00"},{"0000000000, 9:00"}};	
+     
     		
     static String[] categories = {"ID", "First Name", "Last Name", "Program", "Level", "ASURITE"};
-
+    static String[] list = {"ASURITE","Time"};
+    
+    
+    
+   
+    static JTable t2 = new JTable(att, list);
     static JTable jt = new JTable(result, categories);
     static JScrollPane sp=new JScrollPane(jt);
 
@@ -43,7 +51,6 @@ public class View extends JFrame implements MenuListener, ActionListener{
     	
     	
     }
-
 
 
     public static void main(String[] args)
@@ -65,6 +72,7 @@ public class View extends JFrame implements MenuListener, ActionListener{
 
         View m = new View();
         loadRoster.addActionListener(m);
+        addAttendance.addActionListener(m);
         aboutMenu.addMenuListener(m);
 
         // add menu items to fileMenu
@@ -137,6 +145,31 @@ public class View extends JFrame implements MenuListener, ActionListener{
 
     }
     
+    public void attendanceArray() throws FileNotFoundException
+    {
+    	Scanner in = new Scanner(new BufferedReader(new FileReader(file)));
+    	//Scanner in = new Scanner(new File("names.csv"));
+    	ArrayList<String[]> lines = new ArrayList<>();
+    	while(in.hasNextLine()) {
+    	    String line = in.nextLine().trim();
+    	    String[] splitted = line.split(",");
+    	    for(int i = 0; i<splitted.length; i++) {
+    	        //get rid of additional " at start and end
+    	        splitted[i] = splitted[i].substring(0, splitted[i].length());
+    	    }
+    	    lines.add(splitted);
+    	}
+    	
+    	list = new String[lines.size()];
+    	for(int i = 0; i<list.length; i++) 
+    	{
+    	    list = lines.get(i);
+    	}
+
+    	System.out.println(Arrays.deepToString(list));
+		//addTable();
+    }
+    
     public void askFile()
     {
 
@@ -176,14 +209,34 @@ public class View extends JFrame implements MenuListener, ActionListener{
         {
         	askFile();
 
-        	try {
-				readArray();
-				//addTable();
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+        	try 
+        	{
+			readArray();
+			//addTable();			
+		} 
+        	catch (FileNotFoundException e)       	
+        	{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
             
+        }
+        
+        
+        
+        else if(evt.getSource() == addAttendance)
+        {
+        	askFile();
+
+        	try 
+        	{
+        		attendanceArray();
+           	} 			 
+        	catch (FileNotFoundException e)
+        	{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
         }
 
     }
@@ -194,7 +247,7 @@ public class View extends JFrame implements MenuListener, ActionListener{
     {
         if (me.getSource().equals(aboutMenu))
             {
-                JOptionPane.showMessageDialog(about, "CSE360 Final Project\nRachael Kang\nBrian Ayon\nChris Zabel\nRobert",
+                JOptionPane.showMessageDialog(about, "CSE360 Final Project\nRachael Kang\nBrian Ayon\nChris Zabel\nRobert Ramirez",
                                                      "Team Information", JOptionPane.INFORMATION_MESSAGE);
             }
     }
