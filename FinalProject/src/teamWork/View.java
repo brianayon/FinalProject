@@ -9,11 +9,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 import javax.swing.JFileChooser;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
+//import javax.swing.event.MenuEvent;
+//import javax.swing.event.MenuListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-public class View extends JFrame implements MenuListener, ActionListener{
+public class View extends JFrame implements ActionListener, MouseListener {
     static JMenuBar mb;
 
     static JMenu fileMenu, aboutMenu;
@@ -27,34 +27,32 @@ public class View extends JFrame implements MenuListener, ActionListener{
     int response;
     JFileChooser chooser = new JFileChooser(".");
     //static String[][] result;
-     
-     static String[][] result = {{"1210101010", "Javier", "Gonzalez", "Computer Science", "Graduate", "javiergs"},
-    	{"0000000000", "John", "Doe", "Engineering", "Undergraduate", "jdoe24"}};
-     
-     static String[][] att = {{"1210101010,8:00"},{"0000000000, 9:00"}};	
-     
-    		
+
+    static String[][] result = {{"1210101010", "Javier", "Gonzalez", "Computer Science", "Graduate", "javiergs"},
+            {"0000000000", "John", "Doe", "Engineering", "Undergraduate", "jdoe24"}};
+
+    static String[][] att = {{"1210101010,8:00"}, {"0000000000, 9:00"}};
+
+
     static String[] categories = {"ID", "First Name", "Last Name", "Program", "Level", "ASURITE"};
-    static String[] list = {"ASURITE","Time"};
-    
-    
-    
-   
-    static JTable t2 = new JTable(att, list);
+    static String[] list = {"ASURITE", "Time"};
+
+
+
     static JTable jt = new JTable(result, categories);
-    static JScrollPane sp=new JScrollPane(jt);
+    static JTable t2 = new JTable(att, list);
+    static JScrollPane sp = new JScrollPane(jt);
+    static JScrollPane scroll = new JScrollPane(t2);
 
 
     //static String[][] result;
-    public View()
-    {
-    	
-    	
+    public View() {
+
+
     }
 
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         frame = new JFrame("CSE Final Project");
 
         // create a menubar
@@ -64,16 +62,19 @@ public class View extends JFrame implements MenuListener, ActionListener{
         fileMenu = new JMenu("File");
         aboutMenu = new JMenu("About");
 
+
         // create fileMenu items
         loadRoster = new JMenuItem("Load a Roster");
         addAttendance = new JMenuItem("Add Attendance");
         save = new JMenuItem("Save");
         plotData = new JMenuItem("Plot Data");
 
+
         View m = new View();
         loadRoster.addActionListener(m);
         addAttendance.addActionListener(m);
-        aboutMenu.addMenuListener(m);
+        // aboutMenu.addMenuListener(m);
+        aboutMenu.addMouseListener(m);
 
         // add menu items to fileMenu
         fileMenu.add(loadRoster);
@@ -81,6 +82,9 @@ public class View extends JFrame implements MenuListener, ActionListener{
         fileMenu.add(save);
         fileMenu.add(plotData);
 
+
+        JLabel display = new JLabel();
+        display.add(aboutMenu);
 
         // add menu to menu bar
         mb.add(fileMenu);
@@ -92,175 +96,177 @@ public class View extends JFrame implements MenuListener, ActionListener{
         //jt.setCellSelectionEnabled(true);
 
 
-        frame.add(sp);
+
         // set the size of the frame
         frame.setSize(500, 500);
         frame.setVisible(true);
 
 
-        
         //result = m.readArray();
 
-    
-    }
-    
-    public void addTable()
-
-    {
-    	//JTable jt = new JTable(result, categories);
-        //JScrollPane sp=new JScrollPane(jt);
-    	//jt.setCellSelectionEnabled(true);
-
-        //frame.add(sp);
 
     }
-    
-    public void readArray() throws FileNotFoundException
-    {
-    	
-    	Scanner in = new Scanner(new BufferedReader(new FileReader(file)));
-    	//Scanner in = new Scanner(new File("names.csv"));
-    	ArrayList<String[]> lines = new ArrayList<>();
-    	while(in.hasNextLine()) {
-    	    String line = in.nextLine().trim();
-    	    String[] splitted = line.split(",");
-    	    for(int i = 0; i<splitted.length; i++) {
-    	        //get rid of additional " at start and end
-    	        splitted[i] = splitted[i].substring(0, splitted[i].length());
-    	    }
-    	    lines.add(splitted);
-    	}
 
-    	
-    	result = new String[lines.size()][];
-    	for(int i = 0; i<result.length; i++) {
-    	    result[i] = lines.get(i);
-    	}
+    public void addTable() {
+        JTable jt = new JTable(result, categories);
+        JScrollPane sp=new JScrollPane(jt);
+        jt.setCellSelectionEnabled(true);
 
-    	System.out.println(Arrays.deepToString(result));
+        frame.add(sp);
+        frame.setVisible(true);
+
+    }
+
+    public void addAttendanceTable() {
+        JTable t2 = new JTable(att, list);
+        JScrollPane scroll=new JScrollPane(t2);
+        jt.setCellSelectionEnabled(true);
+
+        frame.add(scroll);
+        frame.setVisible(true);
+
+    }
+
+    public void readArray() throws FileNotFoundException {
+
+        Scanner in = new Scanner(new BufferedReader(new FileReader(file)));
+        //Scanner in = new Scanner(new File("names.csv"));
+        ArrayList<String[]> lines = new ArrayList<>();
+        while (in.hasNextLine()) {
+            String line = in.nextLine().trim();
+            String[] splitted = line.split(",");
+
+            for (int i = 0; i < splitted.length; i++) {
+
+                splitted[i] = splitted[i].substring(0, splitted[i].length());
+            }
+            lines.add(splitted);
+        }
+
+
+        result = new String[lines.size()][];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = lines.get(i);
+        }
+
+        System.out.println(Arrays.deepToString(result));
 
         //addTable();
-    	//return result;
+        //return result;
 
 
     }
-    
-    public void attendanceArray() throws FileNotFoundException
-    {
-    	Scanner in = new Scanner(new BufferedReader(new FileReader(file)));
-    	//Scanner in = new Scanner(new File("names.csv"));
-    	ArrayList<String[]> lines = new ArrayList<>();
-    	while(in.hasNextLine()) {
-    	    String line = in.nextLine().trim();
-    	    String[] splitted = line.split(",");
-    	    for(int i = 0; i<splitted.length; i++) {
-    	        //get rid of additional " at start and end
-    	        splitted[i] = splitted[i].substring(0, splitted[i].length());
-    	    }
-    	    lines.add(splitted);
-    	}
-    	
-    	list = new String[lines.size()];
-    	for(int i = 0; i<list.length; i++) 
-    	{
-    	    list = lines.get(i);
-    	}
 
-    	System.out.println(Arrays.deepToString(list));
-		//addTable();
+    public void attendanceArray() throws FileNotFoundException {
+        Scanner in = new Scanner(new BufferedReader(new FileReader(file)));
+        //Scanner in = new Scanner(new File("names.csv"));
+        ArrayList<String[]> lines = new ArrayList<>();
+        while (in.hasNextLine()) {
+            String line = in.nextLine().trim();
+            String[] splitted = line.split(",");
+            for (int i = 0; i < splitted.length; i++) {
+                //get rid of additional " at start and end
+                splitted[i] = splitted[i].substring(0, splitted[i].length());
+            }
+            lines.add(splitted);
+        }
+
+
+        list = new String[lines.size()];
+        for (int i = 0; i < list.length; i++) {
+            list = lines.get(i);
+        }
+
+        System.out.println(Arrays.deepToString(list));
+        //addTable();
     }
-    
-    public void askFile()
-    {
 
-    	chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV FILES","*csv","csv");
+    public void askFile() {
+
+        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV FILES", "*csv", "csv");
         chooser.setFileFilter(filter);
         response = chooser.showOpenDialog(null);
-        if(response == JFileChooser.APPROVE_OPTION)
-        {
+        if (response == JFileChooser.APPROVE_OPTION) {
             file = chooser.getSelectedFile();
 
-            try
-            {
+            try {
                 fileIn = new Scanner(file);
-                if(file.isFile()){
+                if (file.isFile()) {
 
-                    while(fileIn.hasNextLine())
-                    {
+                    while (fileIn.hasNextLine()) {
                         String line = fileIn.nextLine();
                         System.out.println(line);
                     }
-                }
-                else{
+                } else {
                     System.out.println("That was not a file");
                 }
                 fileIn.close();
-            } catch (FileNotFoundException e){
+            } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
 
         }
     }
 
-    public void actionPerformed(ActionEvent evt)
-    {
-        if(evt.getSource() == loadRoster)
-        {
-        	askFile();
+    public void actionPerformed(ActionEvent evt) {
+        if (evt.getSource() == loadRoster) {
+            askFile();
 
-        	try 
-        	{
-			readArray();
-			//addTable();			
-		} 
-        	catch (FileNotFoundException e)       	
-        	{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-            
-        }
-        
-        
-        
-        else if(evt.getSource() == addAttendance)
-        {
-        	askFile();
-
-        	try 
-        	{
-        		attendanceArray();
-           	} 			 
-        	catch (FileNotFoundException e)
-        	{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
-        }
-
-    }
-
-    // methods required by MenuListener
-    @Override
-    public void menuSelected(MenuEvent me)
-    {
-        if (me.getSource().equals(aboutMenu))
-            {
-                JOptionPane.showMessageDialog(about, "CSE360 Final Project\nRachael Kang\nBrian Ayon\nChris Zabel\nRobert Ramirez",
-                                                     "Team Information", JOptionPane.INFORMATION_MESSAGE);
+            try {
+                readArray();
+                addTable();
+            } catch (FileNotFoundException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
+
+        } else if (evt.getSource() == addAttendance) {
+            askFile();
+
+            try {
+                attendanceArray();
+                //addAttendanceTable();
+            } catch (FileNotFoundException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+
     }
 
+
+    public void mouseClicked(MouseEvent e) {
+
+        JOptionPane.showMessageDialog(aboutMenu, "CSE360 Final Project\nRachael Kang\nBrian Ayón\nChris Zabel\nRobert Ramirez",
+                "Team Information", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+
     @Override
-    public void menuDeselected(MenuEvent e)
-    {
+    public void mousePressed(MouseEvent e) {
+        // TODO Auto-generated method stub
 
     }
 
+
     @Override
-    public void menuCanceled(MenuEvent e)
-    {
+    public void mouseReleased(MouseEvent e) {
+        // TODO Auto-generated method stub
+
+    }
+
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        // TODO Auto-generated method stub
+
+    }
+
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        // TODO Auto-generated method stub
 
     }
 }
