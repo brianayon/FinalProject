@@ -1,9 +1,14 @@
 package teamWork;
+/*Description: The class creates a GUI consisted of student information
+* obtained from a csv file the user entered. It is able to load a roster, add attendance 
+* and save the data into a csv file where it can later be exported.
+*Author: Brian Ayon, Rahcael Kang, Chris Zabel, Roberto Ramirez
+*/
 
+//necessary packages imported
 import com.sun.tools.javac.comp.Flow;
 import org.jdesktop.swingx.JXDatePicker;
 import javax.swing.JFormattedTextField;
-
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
@@ -16,7 +21,9 @@ import java.util.*;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+
 public class View extends JFrame implements ActionListener, MouseListener {
+    
     static JMenuBar mb;
 
     static JMenu fileMenu, aboutMenu;
@@ -25,11 +32,7 @@ public class View extends JFrame implements ActionListener, MouseListener {
 
     static JFrame frame, fileChooser;
 
-    //date picker
-
-
-    //static JDatePicker
-    //static JDatePickerImpl datePicker;
+   
 
     static String strDate;
 
@@ -37,22 +40,26 @@ public class View extends JFrame implements ActionListener, MouseListener {
     Scanner fileIn;
     int response;
     JFileChooser chooser = new JFileChooser(".");
-    //static String[][] result;
 
+    //2D arrays for handling the student information
     static String[][] result = {{"1210101010", "Javier", "Gonzalez", "Computer Science", "Graduate", "javiergs"},
             {"0000000000", "John", "Doe", "Engineering", "Undergraduate", "jdoe24"}};
 
     static String[][] att = {{"1210101010,8:00"}, {"0000000000, 9:00"}};
 
 
+    //Heades for the csv files
     static String[] categories = {"ID", "First Name", "Last Name", "Program", "Level", "ASURITE"};
     static String[] list = {"ASURITE", "Time"};
 
+    //Adds the student info and header to a table
     static JTable jt = new JTable(result, categories);
     static JTable t2 = new JTable(att, list);
+    // scroll pane is initialized to scroll trough list of students
     static JScrollPane sp = new JScrollPane(jt);
     static JScrollPane scroll = new JScrollPane(t2);
 
+    //initializes more J components
     JFrame calFrame;
     JPanel panel;
     JButton button;
@@ -82,6 +89,7 @@ public class View extends JFrame implements ActionListener, MouseListener {
         save = new JMenuItem("Save");
         plotData = new JMenuItem("Plot Data");
 
+        //Initialize the date window
         DateWindow pickDate = new DateWindow();
 
         View m = new View();
@@ -109,21 +117,14 @@ public class View extends JFrame implements ActionListener, MouseListener {
         // add menubar to frame
         frame.setJMenuBar(mb);
 
-        //jt.setCellSelectionEnabled(true);
-
-
-        //this.pack();
-
         // set the size of the frame
         frame.setSize(500, 500);
         frame.setVisible(true);
 
 
-        //result = m.readArray();
-
-
     }
-
+    
+    //This method stores a 2D array in a table then adds it to the frame
     public void addTable() {
         JTable jt = new JTable(result, categories);
         JScrollPane sp=new JScrollPane(jt);
@@ -133,7 +134,8 @@ public class View extends JFrame implements ActionListener, MouseListener {
         frame.setVisible(true);
 
     }
-
+     
+    //This method prompt the dat window to pick a date 
     public void askDate()
     {
         DateWindow dateWindow = null;
@@ -149,6 +151,7 @@ public class View extends JFrame implements ActionListener, MouseListener {
 
     }
 
+    //This method stores the attendance list in a table & adds it the frame 
     public void addAttendanceTable() {
         JTable t2 = new JTable(att, list);
         JScrollPane scroll=new JScrollPane(t2);
@@ -162,8 +165,11 @@ public class View extends JFrame implements ActionListener, MouseListener {
 
     }
 
+    /* readArray method reads a file input from the user 
+    * and stores it into an array of strings where it is 
+    *split my a delimiter
+    */
     public void readArray() throws FileNotFoundException {
-
         Scanner in = new Scanner(new BufferedReader(new FileReader(file)));
         //Scanner in = new Scanner(new File("names.csv"));
         ArrayList<String[]> lines = new ArrayList<>();
@@ -188,6 +194,9 @@ public class View extends JFrame implements ActionListener, MouseListener {
 
     }
 
+    /* This array is similar to the readArray however it
+    * focuses the add attendence only
+    */
     public void attendanceArray() throws FileNotFoundException {
         Scanner in = new Scanner(new BufferedReader(new FileReader(file)));
         //Scanner in = new Scanner(new File("names.csv"));
@@ -202,7 +211,6 @@ public class View extends JFrame implements ActionListener, MouseListener {
             lines.add(splitted);
         }
 
-
         att = new String[lines.size()][];
         for (int i = 0; i < att.length; i++) {
             att[i] = lines.get(i);
@@ -212,6 +220,7 @@ public class View extends JFrame implements ActionListener, MouseListener {
         //addTable();
     }
 
+    //This mehtod chooses a file and also determines if it is a csv file or not
     public void askFile() {
 
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -240,6 +249,7 @@ public class View extends JFrame implements ActionListener, MouseListener {
         }
     }
 
+    // This method invoked the actionListener for each menuItem 
     public void actionPerformed(ActionEvent evt) {
         if (evt.getSource() == loadRoster) {
             askFile();
@@ -252,6 +262,7 @@ public class View extends JFrame implements ActionListener, MouseListener {
                 e.printStackTrace();
             }
 
+            //if attendance clicked then it calls the asfile
         } else if (evt.getSource() == addAttendance) {
             askFile();
 
@@ -272,8 +283,10 @@ public class View extends JFrame implements ActionListener, MouseListener {
     }
 
 
+    //This method invokes the MouseListener needed for the "About" JMenu
     public void mouseClicked(MouseEvent e) {
 
+        //dialog box is prompted with team information
         JOptionPane.showMessageDialog(aboutMenu, "CSE360 Final Project\nRachael Kang\nBrian Ayón\nChris Zabel\nRobert Ramirez",
                 "Team Information", JOptionPane.INFORMATION_MESSAGE);
     }
