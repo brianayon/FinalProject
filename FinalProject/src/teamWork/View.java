@@ -1,21 +1,19 @@
 package teamWork;
 
-import org.jdatepicker.JDatePicker;
-import org.jdatepicker.impl.JDatePanelImpl;
-import org.jdatepicker.impl.JDatePickerImpl;
-import org.jdatepicker.impl.SqlDateModel;
+import com.sun.tools.javac.comp.Flow;
 import org.jdesktop.swingx.JXDatePicker;
+import javax.swing.JFormattedTextField;
 
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+import java.beans.PropertyChangeListener;
 import java.io.*;
 import java.io.FileNotFoundException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.swing.JFileChooser;
-//import javax.swing.event.MenuEvent;
-//import javax.swing.event.MenuListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class View extends JFrame implements ActionListener, MouseListener {
@@ -25,10 +23,13 @@ public class View extends JFrame implements ActionListener, MouseListener {
 
     static JMenuItem loadRoster, addAttendance, save, plotData;
 
-    static JFrame frame, fileChooser, about;
+    static JFrame frame, fileChooser;
+
+    //date picker
+
 
     //static JDatePicker
-    static JDatePickerImpl datePicker;
+    //static JDatePickerImpl datePicker;
 
     static String strDate;
 
@@ -47,13 +48,10 @@ public class View extends JFrame implements ActionListener, MouseListener {
     static String[] categories = {"ID", "First Name", "Last Name", "Program", "Level", "ASURITE"};
     static String[] list = {"ASURITE", "Time"};
 
-
-
     static JTable jt = new JTable(result, categories);
     static JTable t2 = new JTable(att, list);
     static JScrollPane sp = new JScrollPane(jt);
     static JScrollPane scroll = new JScrollPane(t2);
-
 
     JFrame calFrame;
     JPanel panel;
@@ -66,7 +64,6 @@ public class View extends JFrame implements ActionListener, MouseListener {
 
 
     }
-
 
     public static void main(String[] args) {
         frame = new JFrame("CSE Final Project");
@@ -85,6 +82,7 @@ public class View extends JFrame implements ActionListener, MouseListener {
         save = new JMenuItem("Save");
         plotData = new JMenuItem("Plot Data");
 
+        DateWindow pickDate = new DateWindow();
 
         View m = new View();
         loadRoster.addActionListener(m);
@@ -97,7 +95,6 @@ public class View extends JFrame implements ActionListener, MouseListener {
         fileMenu.add(addAttendance);
         fileMenu.add(save);
         fileMenu.add(plotData);
-
 
         JLabel display = new JLabel();
         display.add(aboutMenu);
@@ -136,12 +133,18 @@ public class View extends JFrame implements ActionListener, MouseListener {
 
     public void askDate()
     {
-
-        PickDate pick = new PickDate();
-        pick.pickDate();
+        DateWindow dateWindow = null;
+        try
+        {
+            dateWindow = new DateWindow();
+            dateWindow.setVisible(true);
+        }
+        catch (Exception exp)
+        {
+            exp.printStackTrace();
+        }
 
     }
-
 
     public void addAttendanceTable() {
         JTable t2 = new JTable(att, list);
@@ -151,6 +154,8 @@ public class View extends JFrame implements ActionListener, MouseListener {
 
         frame.add(scroll);
         frame.setVisible(true);
+
+        askDate();
 
     }
 
@@ -297,4 +302,8 @@ public class View extends JFrame implements ActionListener, MouseListener {
         // TODO Auto-generated method stub
 
     }
+
+
+
+
 }
