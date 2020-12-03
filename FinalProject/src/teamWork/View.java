@@ -92,8 +92,11 @@ public class View extends JFrame implements ActionListener, MouseListener {
 
         // add menu items to fileMenu
         fileMenu.add(loadRoster);
+        fileMenu.addSeparator(); // creates a line between LoadRoster & attendance
         fileMenu.add(addAttendance);
+        fileMenu.addSeparator(); //seperates
         fileMenu.add(save);
+        fileMenu.addSeparator(); 
         fileMenu.add(plotData);
 
         JLabel display = new JLabel();
