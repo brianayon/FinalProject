@@ -1,13 +1,18 @@
 package teamWork;
 
+import org.jdatepicker.JDatePicker;
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.SqlDateModel;
+import org.jdesktop.swingx.JXDatePicker;
+
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 import java.io.*;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import javax.swing.JFileChooser;
 //import javax.swing.event.MenuEvent;
 //import javax.swing.event.MenuListener;
@@ -21,6 +26,11 @@ public class View extends JFrame implements ActionListener, MouseListener {
     static JMenuItem loadRoster, addAttendance, save, plotData;
 
     static JFrame frame, fileChooser, about;
+
+    //static JDatePicker
+    static JDatePickerImpl datePicker;
+
+    static String strDate;
 
     static File file;
     Scanner fileIn;
@@ -43,6 +53,12 @@ public class View extends JFrame implements ActionListener, MouseListener {
     static JTable t2 = new JTable(att, list);
     static JScrollPane sp = new JScrollPane(jt);
     static JScrollPane scroll = new JScrollPane(t2);
+
+
+    JFrame calFrame;
+    JPanel panel;
+    JButton button;
+    JLabel label;
 
 
     //static String[][] result;
@@ -96,6 +112,7 @@ public class View extends JFrame implements ActionListener, MouseListener {
         //jt.setCellSelectionEnabled(true);
 
 
+        //this.pack();
 
         // set the size of the frame
         frame.setSize(500, 500);
@@ -117,10 +134,20 @@ public class View extends JFrame implements ActionListener, MouseListener {
 
     }
 
+    public void askDate()
+    {
+
+        PickDate pick = new PickDate();
+        pick.pickDate();
+
+    }
+
+
     public void addAttendanceTable() {
         JTable t2 = new JTable(att, list);
         JScrollPane scroll=new JScrollPane(t2);
-        jt.setCellSelectionEnabled(true);
+        t2.setCellSelectionEnabled(true);
+        //frame.dispose();
 
         frame.add(scroll);
         frame.setVisible(true);
@@ -151,10 +178,6 @@ public class View extends JFrame implements ActionListener, MouseListener {
 
         System.out.println(Arrays.deepToString(result));
 
-        //addTable();
-        //return result;
-
-
     }
 
     public void attendanceArray() throws FileNotFoundException {
@@ -172,9 +195,9 @@ public class View extends JFrame implements ActionListener, MouseListener {
         }
 
 
-        list = new String[lines.size()];
-        for (int i = 0; i < list.length; i++) {
-            list = lines.get(i);
+        att = new String[lines.size()][];
+        for (int i = 0; i < att.length; i++) {
+            att[i] = lines.get(i);
         }
 
         System.out.println(Arrays.deepToString(list));
@@ -226,6 +249,11 @@ public class View extends JFrame implements ActionListener, MouseListener {
 
             try {
                 attendanceArray();
+                addAttendanceTable();
+
+                //askDate();
+
+
                 //addAttendanceTable();
             } catch (FileNotFoundException e) {
                 // TODO Auto-generated catch block
